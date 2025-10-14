@@ -12,8 +12,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import typer
 
-from .genai import chat as genai_chat
-from .personas import get_all_personas
+from genai import chat as genai_chat
+from personas import get_all_personas
 
 
 ISO = "%Y-%m-%dT%H:%M:%S.%fZ"
@@ -66,11 +66,11 @@ async def _call_model_json(model: str, messages: List[Dict[str, Any]], *, api_lo
         genai_chat,
         model,
         messages,
-        None,  # response_format is set inside messages description; server may still return JSON
-        0.2,
-        2200,
-        3,
-        api_log_path,
+        response_format=None,
+        temperature=0.2,
+        max_tokens=2200,
+        max_retries=3,
+        api_log_path=api_log_path,
     )
     try:
         return json.loads(text)
