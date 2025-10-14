@@ -1,0 +1,12 @@
+{"time": "2025-09-19T19:21:15.041454Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.078}
+{"time": "2025-09-19T19:21:27.022879Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.052}
+{"time": "2025-09-19T19:21:39.243935Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.265}
+{"time": "2025-09-19T19:21:51.461807Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.252}
+{"time": "2025-09-19T19:22:03.486522Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.272}
+{"time": "2025-09-19T19:22:22.015598Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 3.072}
+{"time": "2025-09-19T19:22:33.515597Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.726}
+{"time": "2025-09-19T19:22:47.223743Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.111}
+{"time": "2025-09-19T19:22:59.526898Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.408}
+{"time": "2025-09-19T19:23:11.182832Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.056}
+{"time": "2025-09-19T19:23:23.853027Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.721}
+{"time": "2025-09-19T19:23:37.878532Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1-mini", "status_code": 200, "duration_s": 1.917}

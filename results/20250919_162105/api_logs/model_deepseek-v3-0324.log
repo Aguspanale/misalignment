@@ -1,0 +1,13 @@
+{"time": "2025-09-19T19:21:09.958818Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 2.102}
+{"time": "2025-09-19T19:21:21.048491Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 1.08}
+{"time": "2025-09-19T19:21:33.672058Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 1.697}
+{"time": "2025-09-19T19:21:46.202883Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 2.222}
+{"time": "2025-09-19T19:21:57.265466Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 1.053}
+{"time": "2025-09-19T19:22:16.116137Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 5.368}
+{"time": "2025-09-19T19:22:27.785755Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 2.838}
+{"time": "2025-09-19T19:22:42.106946Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 4.313}
+{"time": "2025-09-19T19:22:53.567286Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 1.451}
+{"time": "2025-09-19T19:23:05.235339Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 1.113}
+{"time": "2025-09-19T19:23:17.207968Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 1.079}
+{"time": "2025-09-19T19:23:31.211632Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 3.075}
+{"time": "2025-09-19T19:23:45.575409Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "deepseek-v3-0324", "status_code": 200, "duration_s": 3.609}

@@ -1,0 +1,10 @@
+{"time": "2025-09-19T19:18:59.178408Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.91}
+{"time": "2025-09-19T19:19:11.013990Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.739}
+{"time": "2025-09-19T19:19:22.899989Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.617}
+{"time": "2025-09-19T19:19:36.441033Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 2.115}
+{"time": "2025-09-19T19:19:47.986143Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.653}
+{"time": "2025-09-19T19:20:02.494239Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 2.258}
+{"time": "2025-09-19T19:20:13.864047Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.62}
+{"time": "2025-09-19T19:20:28.715262Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.971}
+{"time": "2025-09-19T19:20:40.181503Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.431}
+{"time": "2025-09-19T19:20:52.297138Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.539}
