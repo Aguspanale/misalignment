@@ -1,4 +1,0 @@
-{"time": "2025-09-19T19:13:18.481290Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.81}
-{"time": "2025-09-19T19:13:24.562357Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.888}
-{"time": "2025-09-19T19:13:30.305677Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.63}
-{"time": "2025-09-19T19:13:35.970821Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "gpt-4.1", "status_code": 200, "duration_s": 1.292}

@@ -1,9 +1,0 @@
-{"time": "2025-09-19T19:16:24.556819Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.546}
-{"time": "2025-09-19T19:16:38.896414Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.17}
-{"time": "2025-09-19T19:16:53.790975Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.096}
-{"time": "2025-09-19T19:17:12.512421Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.421}
-{"time": "2025-09-19T19:17:27.495279Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.047}
-{"time": "2025-09-19T19:17:44.614230Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.729}
-{"time": "2025-09-19T19:18:00.481758Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.443}
-{"time": "2025-09-19T19:18:14.650067Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.215}
-{"time": "2025-09-19T19:18:30.904516Z", "attempt": 1, "url": "https://genai.melioffice.com/openai/v2/chat/completions", "model": "mistral-small-3.1", "status_code": 200, "duration_s": 1.17}
