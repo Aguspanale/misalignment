@@ -9,11 +9,30 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
-
+from dotenv import load_dotenv
+load_dotenv()
 import typer
+import threading
+import requests
+from tenacity import RetryError
 
-from genai import chat as genai_chat
-from personas import get_all_personas
+try:
+    from .genai import chat as genai_chat  # when run as module: python -m bench.ft_dataset
+    from .personas import get_all_personas
+    from .runner import RateLimiter
+except Exception:  # pragma: no cover - fallback for direct script execution
+    try:
+        from bench.genai import chat as genai_chat  # when run as script with repo root on PYTHONPATH
+        from bench.personas import get_all_personas
+        from bench.runner import RateLimiter
+    except Exception:
+        # Last resort: adjust sys.path to include project root
+        import sys as _sys
+        from pathlib import Path as _Path
+        _sys.path.append(str(_Path(__file__).resolve().parent.parent))
+        from bench.genai import chat as genai_chat
+        from bench.personas import get_all_personas
+        from bench.runner import RateLimiter
 
 
 ISO = "%Y-%m-%dT%H:%M:%S.%fZ"
@@ -60,22 +79,43 @@ def _build_generation_messages(persona: Dict[str, str], count: int) -> List[Dict
     ]
 
 
-async def _call_model_json(model: str, messages: List[Dict[str, Any]], *, api_log_path: Optional[str]) -> Dict[str, Any]:
-    # Ask for JSON via response_format to improve adherence
-    text = await asyncio.to_thread(
-        genai_chat,
-        model,
-        messages,
-        response_format=None,
-        temperature=0.2,
-        max_tokens=2200,
-        max_retries=3,
-        api_log_path=api_log_path,
-    )
-    try:
-        return json.loads(text)
-    except Exception:
-        return {"samples": []}
+async def _call_model_json(
+    model: str,
+    messages: List[Dict[str, Any]],
+    *,
+    api_log_path: Optional[str],
+    inner_max_retries: int,
+    outer_max_retries: int,
+    verbose: int,
+) -> Dict[str, Any]:
+    # Outer retry loop (in addition to genai_chat internal retries)
+    attempt = 0
+    while True:
+        attempt += 1
+        try:
+            text = await asyncio.to_thread(
+                genai_chat,
+                model,
+                messages,
+                response_format=None,
+                temperature=0.2,
+                max_tokens=2200,
+                max_retries=inner_max_retries,
+                api_log_path=api_log_path,
+            )
+            try:
+                return json.loads(text)
+            except Exception:
+                # Non-JSON; return empty to avoid halting the run
+                return {"samples": []}
+        except requests.HTTPError as exc:
+            if verbose >= 2:
+                print(f"HTTP error attempt {attempt}/{outer_max_retries}: {exc}", flush=True)
+            if attempt >= max(1, int(outer_max_retries)):
+                raise
+            # Exponential backoff similar to benchmark
+            delay = min(8.0, 0.5 * (2 ** (attempt - 1)))
+            await asyncio.sleep(delay)
 
 
 async def generate_for_persona(
@@ -86,6 +126,10 @@ async def generate_for_persona(
     batch_size: int,
     concurrency: int,
     out_dir: Path,
+    limiter: Optional[RateLimiter],
+    inner_max_retries: int,
+    outer_max_retries: int,
+    verbose: int,
 ) -> Tuple[str, int]:
     _ensure_dir(str(out_dir))
     out_path = out_dir / f"{persona['slug']}.jsonl"
@@ -102,10 +146,42 @@ async def generate_for_persona(
     results: List[Dict[str, Any]] = []
     start = time.perf_counter()
 
+    # Heartbeat progress logging
+    progress = {"submitted": 0, "completed": 0, "samples": 0, "total_batches": len(batches), "start": start}
+    stop_event = threading.Event()
+    def _heartbeat() -> None:
+        while not stop_event.wait(5.0):
+            if verbose >= 1:
+                elapsed = time.perf_counter() - progress["start"]
+                print(
+                    f"{persona['slug']}: in-progress {progress['completed']}/{progress['total_batches']} batches, "
+                    f"samples={progress['samples']} elapsed={elapsed:.1f}s",
+                    flush=True,
+                )
+    hb = threading.Thread(target=_heartbeat, daemon=True)
+    if verbose >= 1:
+        hb.start()
+
     async def worker(count: int) -> None:
         async with sem:
+            if limiter is not None:
+                await limiter.acquire()
             msgs = _build_generation_messages(persona, count)
-            obj = await _call_model_json(model, msgs, api_log_path=str(api_log_path))
+            try:
+                obj = await _call_model_json(
+                    model,
+                    msgs,
+                    api_log_path=str(api_log_path),
+                    inner_max_retries=inner_max_retries,
+                    outer_max_retries=outer_max_retries,
+                    verbose=verbose,
+                )
+            except Exception as e:
+                if verbose >= 1:
+                    print(f"{persona['slug']}: batch error: {e}", flush=True)
+                progress["completed"] += 1
+                return
+            added = 0
             for it in obj.get("samples", []) or []:
                 user = (it.get("user") or "").strip()
                 assistant = (it.get("assistant") or "").strip()
@@ -127,9 +203,24 @@ async def generate_for_persona(
                         },
                     }
                 )
+                added += 1
+            progress["completed"] += 1
+            progress["samples"] = len(results)
+            if verbose >= 2:
+                print(f"{persona['slug']}: completed batch (+{added}, total={len(results)})", flush=True)
 
-    await asyncio.gather(*(worker(c) for c in batches))
+    # Submit tasks
+    tasks = []
+    for c in batches:
+        tasks.append(asyncio.create_task(worker(c)))
+        progress["submitted"] += 1
+        if verbose >= 2:
+            print(f"{persona['slug']}: submitted batch ({c})", flush=True)
+    await asyncio.gather(*tasks)
 
+    stop_event.set()
+    if hb.is_alive():
+        hb.join(timeout=1.0)
     with open(out_path, "w", encoding="utf-8") as f:
         for row in results:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
@@ -145,6 +236,9 @@ class Args:
     batch_size: int
     concurrency: int
     personas: Optional[str]
+    verbose: int
+    max_retries: int
+    rate_limit_rps: float
 
 
 app = typer.Typer(add_completion=False, no_args_is_help=True)
@@ -158,6 +252,9 @@ def build(
     batch_size: int = typer.Option(40, "--batch-size", help="Tamaño por llamada"),
     concurrency: int = typer.Option(4, "--concurrency", min=1),
     personas: Optional[str] = typer.Option(None, "--personas", help="Slugs separados por coma (default: todas)"),
+    verbose: int = typer.Option(1, "--verbose", min=0, max=2, help="0=silent, 1=progress, 2=debug"),
+    max_retries: int = typer.Option(6, "--max-retries", min=1, help="Intentos externos ante errores (además de los internos)"),
+    rate_limit_rps: float = typer.Option(0.0, "--rate-limit-rps", min=0.0, help="Límite global de RPS (0=sin límite)"),
 ):
     if not os.path.isabs(output_dir):
         typer.echo("--output-dir debe ser absoluto")
@@ -180,6 +277,7 @@ def build(
 
     async def main_async() -> None:
         tasks: List[asyncio.Task[Tuple[str, int]]] = []
+        limiter = RateLimiter(rate_limit_rps) if rate_limit_rps and rate_limit_rps > 0 else None
         for persona in selected:
             tasks.append(asyncio.create_task(
                 generate_for_persona(
@@ -189,13 +287,18 @@ def build(
                     batch_size=batch_size,
                     concurrency=concurrency,
                     out_dir=out_root,
+                    limiter=limiter,
+                    inner_max_retries=3,
+                    outer_max_retries=max_retries,
+                    verbose=verbose,
                 )
             ))
         results = await asyncio.gather(*tasks)
         summary = {Path(p).stem: n for p, n in results}
         with open(out_root / "summary.json", "w", encoding="utf-8") as sf:
             json.dump({"totals": summary, "time": _iso_now()}, sf, ensure_ascii=False, indent=2)
-        typer.echo(json.dumps(summary, ensure_ascii=False))
+        if verbose >= 1:
+            typer.echo(json.dumps(summary, ensure_ascii=False))
 
     asyncio.run(main_async())
 
